@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button /*btnStart, btnPause,*/ btnHome;
+    Button btnHome;
     TextView textViewObject;
     Handler customerHandler = new Handler();
     LinearLayout container;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             timeInMilliseconds = SystemClock.uptimeMillis()-startTime;
-            //updateTime = timeSwapBuff+timeInMilliseconds;
             int secs=(int)(timeInMilliseconds/1000);
             int mins=secs/60;
             secs%=60;
@@ -43,15 +42,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    //private Chronometer chronometer;
-    //private boolean running;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //btnStart = (Button)findViewById(R.id.btnStart);
-        //btnPause = (Button)findViewById(R.id.btnPause);
         btnHome = (Button)findViewById(R.id.btnHome);
         textViewObject = (TextView)findViewById(R.id.timerView);
         container = (LinearLayout)findViewById(R.id.container);
@@ -60,25 +54,8 @@ public class MainActivity extends AppCompatActivity {
         scoreViewObject.setText("Score   " + Integer.toString(score));
         attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
         attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
-
-        //Typeface type = Typeface.createFromAsset(getAssets(),"font/dsdigii.tff");
-        //textViewObject.setTypeface(type);
-
-        //btnStart.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
                 startTime = SystemClock.uptimeMillis();
                 customerHandler.postDelayed(updateTimerThread, 0);
-        //    }
-        //});
-
-        /*btnPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timeSwapBuff+=timeInMilliseconds;
-                customerHandler.removeCallbacks(updateTimerThread);
-            }
-        });*/
 
         background.setOnClickListener(new View.OnClickListener() {
             @Override

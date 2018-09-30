@@ -47,20 +47,6 @@
             android:layout_width="50px"
             android:layout_height="wrap_content"/>
 
-        <!--Button
-            android:id="@+id/btnStart"
-            android:text="Start"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/-->
-
-        <!--Button
-            android:id="@+id/btnPause"
-            android:text="Pause"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,37 +68,5 @@
                     android:layout_height="wrap_content"></LinearLayout>
             </ScrollView>
         </LinearLayout>
-
-
     </LinearLayout>
-
-    <!--Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content
-" />
-
-    <Chronometer
-        android:id="@+id/chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:onClick="startChronometer"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
-        android:onClick="pauseChronometer"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reset"
-        android:onClick="resetChronometer"/-->
-
 </LinearLayout>
