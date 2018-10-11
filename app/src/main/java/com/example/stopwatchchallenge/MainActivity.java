@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Console;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button /*btnStart, btnPause,*/ btnHome, btnRolf;
+    Button /*btnHome,*/ btnRolf;
     TextView textViewObject;
     Handler customerHandler = new Handler();
     LinearLayout container;
@@ -31,15 +33,17 @@ public class MainActivity extends AppCompatActivity {
     Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
-            timeInMilliseconds = SystemClock.uptimeMillis()-startTime;
-            //updateTime = timeSwapBuff+timeInMilliseconds;
-            int secs=(int)(timeInMilliseconds/1000);
-            int mins=secs/60;
-            secs%=60;
-            int milliseconds=(int)(timeInMilliseconds%1000/10);
-            textViewObject.setText(""+mins+":"+String.format("%02d",secs)+":"
-                    +String.format("%02d",milliseconds));
-            customerHandler.postDelayed(this, 0);
+            if (attempts > 0) {
+                timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+                //updateTime = timeSwapBuff+timeInMilliseconds;
+                int secs = (int) (timeInMilliseconds / 1000);
+                int mins = secs / 60;
+                secs %= 60;
+                int milliseconds = (int) (timeInMilliseconds % 1000 / 10);
+                textViewObject.setText("" + mins + ":" + String.format("%02d", secs) + ":"
+                        + String.format("%02d", milliseconds));
+                customerHandler.postDelayed(this, 0);
+            }
         }
     };
 
@@ -50,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //btnStart = (Button)findViewById(R.id.btnStart);
-        //btnPause = (Button)findViewById(R.id.btnPause);
-        btnHome = (Button)findViewById(R.id.btnHome);
+        //btnHome = (Button)findViewById(R.id.btnHome);
         btnRolf = (Button)findViewById(R.id.btnRolf);
         textViewObject = (TextView)findViewById(R.id.timerView);
         container = (LinearLayout)findViewById(R.id.container);
@@ -84,47 +86,63 @@ public class MainActivity extends AppCompatActivity {
         btnRolf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if (attempts == 0)
+                    return;
+
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View addView = inflater.inflate(R.layout.row, null);
 
-                TextView txtValue = (TextView)addView.findViewById(R.id.txtContent); // row
-                txtValue.setText(textViewObject.getText()); // main
                 Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
                 Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
+                Integer fraction = Integer.parseInt(textViewObject.getText().toString().substring(5, 7));
+                int pointsAwarded = Math.abs(fraction - 50);
+                //System.out.println(pointsAwarded);
+                score += pointsAwarded;
+                StringBuilder rowText = new StringBuilder();
+                rowText.append("    " + textViewObject.getText() + "     +" + pointsAwarded + " pts");
+                if (pointsAwarded != 50) {
+                    attempts--;
+                } else {
+                    rowText.append("    +1 attempt");
+                }
+                TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
+                txtValue.setText(rowText);
+                scoreViewObject.setText("Points   " + Integer.toString(score));
+                attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                 switch (tenth) {
                     case 0:
                     case 9:
                         if (tenth == 0 && hundredth == 0) {
                             txtValue.setTextColor(Color.BLUE);
-                            score += 10;
-                            attempts--;
-                            scoreViewObject.setText("Score   " + Integer.toString(score));
-                            attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                            //score += 10;
+                            //attempts--;
+                            //scoreViewObject.setText("Score   " + Integer.toString(score));
+                            //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                         }
                         else {
                             //txtValue.setTextColor(Color.GREEN);
                             txtValue.setTextColor(Color.rgb(0, 255, 0));
-                            score += 5;
-                            attempts--;
-                            scoreViewObject.setText("Score   " + Integer.toString(score));
-                            attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                            //score += 5;
+                            //attempts--;
+                            //scoreViewObject.setText("Score   " + Integer.toString(score));
+                            //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                         }
                         break;
                     case 1:
                     case 8:
                         txtValue.setTextColor(Color.rgb(255, 200, 0));
-                        score += 3;
-                        attempts--;
-                        scoreViewObject.setText("Score   " + Integer.toString(score));
-                        attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                        //score += 3;
+                        //attempts--;
+                        //scoreViewObject.setText("Score   " + Integer.toString(score));
+                        //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                         break;
                     case 2:
                     case 7:
                         txtValue.setTextColor(Color.rgb(255, 125, 0));
-                        score += 1;
-                        attempts--;
-                        scoreViewObject.setText("Score   " + Integer.toString(score));
-                        attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                        //score += 1;
+                        //attempts--;
+                        //scoreViewObject.setText("Score   " + Integer.toString(score));
+                        //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                         break;
                     default:
                         txtValue.setTextColor(Color.rgb(255, 0, 0));
