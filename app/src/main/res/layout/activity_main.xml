@@ -16,13 +16,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <!--Button
-            android:id="@+id/btnHome"
-            android:text="H"
-            android:layout_weight="1"
-            android:layout_width="25px"
-            android:layout_height="wrap_content"/-->
-
         <TextView
             android:id="@+id/scoreView"
             android:layout_width="wrap_content"
@@ -44,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"/>
-
     </LinearLayout>
 
     <TextView
@@ -70,24 +62,10 @@
 
         <Button
             android:id="@+id/btnRolf"
-            android:text=""
+            android:text="Tap Here"
             android:layout_weight="1"
             android:layout_width="50px"
-            android:layout_height="wrap_content"/>
-
-        <!--Button
-            android:id="@+id/btnStart"
-            android:text="Start"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/-->
-
-        <!--Button
-            android:id="@+id/btnPause"
-            android:text="Pause"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/-->
+            android:layout_height="200px"/>
     </LinearLayout>
 
         <LinearLayout
@@ -111,34 +89,5 @@
                     android:layout_height="wrap_content"></LinearLayout>
             </ScrollView>
     </LinearLayout>
-
-    <!--Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content
-" />
-
-    <Chronometer
-        android:id="@+id/chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:onClick="startChronometer"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
-        android:onClick="pauseChronometer"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reset"
-        android:onClick="resetChronometer"/-->
 
 </LinearLayout>
