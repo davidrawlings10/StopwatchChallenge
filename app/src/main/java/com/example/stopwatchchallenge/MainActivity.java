@@ -14,9 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.Console;
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity {
     Button btnMain;
     TextView textViewObject;
@@ -25,17 +22,17 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout background;
     TextView scoreViewObject;
     TextView attemptsViewObject;
+    TextView highScoreViewObject;
 
     long startTime=0L,timeInMilliseconds=0L;
 
     int score = 0;
     int highScore;
-    int attempts = 10;
+    int attempts = 15;
     int taps = 0;
 
     final String PREFS_NAME = "sharedPrefs";
-    final String TEXT = "text";
-    //boolean clockStopped = false;
+    final String INT = "int";
 
     Runnable updateTimerThread = new Runnable() {
         @Override
@@ -55,9 +52,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        btnMain = (Button)findViewById(R.id.btnRolf);
+
+        // retrieve highscore
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        highScore = sharedPreferences.getInt(INT, 0);
+
+        btnMain = (Button)findViewById(R.id.btnMain);
         textViewObject = (TextView)findViewById(R.id.timerView);
         container = (LinearLayout)findViewById(R.id.container);
         background = (LinearLayout)findViewById(R.id.background);
@@ -65,13 +68,10 @@ public class MainActivity extends AppCompatActivity {
         scoreViewObject.setText("Score   " + Integer.toString(score));
         attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
         attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+        highScoreViewObject = (TextView)findViewById(R.id.highScoreView);
+        highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
         startTime = SystemClock.uptimeMillis();
         customerHandler.postDelayed(updateTimerThread, 0);
-
-        // retrieve highscore
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        highScore = sharedPreferences.getInt(TEXT, 0);
-        System.out.println("------------------------"+highScore+"-----------------------");
 
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
                     attempts = 10;
                     score = 0;
                     btnMain.setText("Tap Here");
-                    scoreViewObject.setText("Points   " + Integer.toString(score));
+                    scoreViewObject.setText("Score   " + Integer.toString(score));
                     attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                    highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
                     startTime = SystemClock.uptimeMillis();
                     timeInMilliseconds = 0L;
                     container.removeAllViews();
@@ -106,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 if (pointsAwarded != 50) {
                     attempts--;
                     if (attempts == 0) {
-                        if (score > highScore)
-                            saveHighScore(score);
+                        if (score > highScore) {
+                            highScore = score;
+                            saveHighScore(highScore);
+                        }
 
                         btnMain.setText("Restart");
                     }
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
                 txtValue.setText(rowText);
-                scoreViewObject.setText("Points   " + Integer.toString(score));
+                scoreViewObject.setText("Score   " + Integer.toString(score));
                 attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                 switch (tenth) {
                     case 0:
@@ -139,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 container.addView(addView, 0);
-                if (taps > 12)
-                    container.removeViewAt(12);
+                //if (taps > 12)
+                //    container.removeViewAt(12);
             }
         });
     }
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveHighScore(int score) {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(TEXT, score);
+        editor.putInt(INT, score);
         editor.apply();
     }
 }
