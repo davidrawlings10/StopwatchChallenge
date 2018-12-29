@@ -1,6 +1,7 @@
 package com.example.stopwatchchallenge;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Handler;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.Console;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     Button btnMain;
@@ -25,15 +29,17 @@ public class MainActivity extends AppCompatActivity {
     long startTime=0L,timeInMilliseconds=0L;
 
     int score = 0;
+    int highScore;
     int attempts = 10;
     int taps = 0;
+
+    final String PREFS_NAME = "sharedPrefs";
+    final String TEXT = "text";
     //boolean clockStopped = false;
 
     Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
-            System.out.println("timeInMilliseconds:"+timeInMilliseconds+", startTime:"+startTime);
-            System.out.println(attempts);
             timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
             int secs = (int) (timeInMilliseconds / 1000);
             int mins = secs / 60;
@@ -61,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
         startTime = SystemClock.uptimeMillis();
         customerHandler.postDelayed(updateTimerThread, 0);
+
+        // retrieve highscore
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        highScore = sharedPreferences.getInt(TEXT, 0);
+        System.out.println("------------------------"+highScore+"-----------------------");
 
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,8 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 rowText.append("    " + textViewObject.getText() + "     +" + pointsAwarded + " pts");
                 if (pointsAwarded != 50) {
                     attempts--;
-                    if (attempts == 0)
+                    if (attempts == 0) {
+                        if (score > highScore)
+                            saveHighScore(score);
+
                         btnMain.setText("Restart");
+                    }
                 } else {
                     rowText.append("    +1 attempt");
                 }
@@ -128,5 +143,12 @@ public class MainActivity extends AppCompatActivity {
                     container.removeViewAt(12);
             }
         });
+    }
+
+    public void saveHighScore(int score) {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(TEXT, score);
+        editor.apply();
     }
 }
