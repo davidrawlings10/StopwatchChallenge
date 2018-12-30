@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     int score = 0;
     int highScore;
-    int attempts = 15;
+    int attempts = 10;
     int taps = 0;
 
     final String PREFS_NAME = "sharedPrefs";
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-        // retrieve highscore
+        // retrieve saved highscore
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         highScore = sharedPreferences.getInt(INT, 0);
 
@@ -77,17 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (attempts == 0) {
-                    // restart the game if button is tapped when user is out of attempts
-                    taps = 0;
-                    attempts = 10;
-                    score = 0;
-                    btnMain.setText("Tap Here");
-                    scoreViewObject.setText("Score   " + Integer.toString(score));
-                    attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
-                    highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
-                    startTime = SystemClock.uptimeMillis();
-                    timeInMilliseconds = 0L;
-                    container.removeAllViews();
+                    reset();
                     return;
                 }
 
@@ -142,10 +132,24 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 container.addView(addView, 0);
-                //if (taps > 12)
-                //    container.removeViewAt(12);
+                if (taps > 12)
+                    container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
             }
         });
+    }
+
+    public void reset() {
+        taps = 0;
+        attempts = 10;
+        score = 0;
+        btnMain.setText("Tap Here");
+        scoreViewObject.setText("Score   " + Integer.toString(score));
+        attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+        highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
+        startTime = SystemClock.uptimeMillis();
+        timeInMilliseconds = 0L;
+        container.removeAllViews();
+        container.setPadding(0, 0, 0, 0);
     }
 
     public void saveHighScore(int score) {
