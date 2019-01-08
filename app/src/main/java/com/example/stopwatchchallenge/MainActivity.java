@@ -99,66 +99,67 @@ public class MainActivity extends AppCompatActivity {
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (attempts == 0) {
-                setup();
-                return;
-            }
-
-            btnMain.setText("");
-            ++taps;
-
-            LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View addView = inflater.inflate(R.layout.row, null);
-
-            Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
-            Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
-            Integer fraction = Integer.parseInt(textViewObject.getText().toString().substring(5, 7));
-            int pointsAwarded = Math.abs(fraction - 50);
-            score += pointsAwarded;
-            StringBuilder rowText = new StringBuilder();
-            rowText.append("    " + textViewObject.getText() + "     +" + pointsAwarded + " pts");
-            if (pointsAwarded != 50) {
-                attempts--;
                 if (attempts == 0) {
-                    if (score > highScore) {
-                        highScore = score;
-                        saveHighScore(highScore);
-                    }
-
-                    timerRunning = false;
-
-                    btnMain.setText("Restart");
+                    setup();
+                    timerRunning = true;
+                    return;
                 }
-            } else {
-                rowText.append("    +1 attempt");
-            }
-            TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
-            txtValue.setText(rowText);
-            scoreViewObject.setText("Score   " + Integer.toString(score));
-            attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
-            switch (tenth) {
-                case 0:
-                case 9:
-                    if (tenth == 0 && hundredth == 0)
-                        txtValue.setTextColor(Color.BLUE);
-                    else
-                        txtValue.setTextColor(Color.rgb(0, 255, 0));
-                    break;
-                case 1:
-                case 8:
-                    txtValue.setTextColor(Color.rgb(255, 200, 0));
-                    break;
-                case 2:
-                case 7:
-                    txtValue.setTextColor(Color.rgb(255, 125, 0));
-                    break;
-                default:
-                    txtValue.setTextColor(Color.rgb(255, 0, 0));
-                    break;
-            }
-            container.addView(addView, 0);
-            if (taps > 13)
-                container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
+
+                btnMain.setText("");
+                ++taps;
+
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View addView = inflater.inflate(R.layout.row, null);
+
+                Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
+                Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
+                Integer fraction = Integer.parseInt(textViewObject.getText().toString().substring(5, 7));
+                int pointsAwarded = Math.abs(fraction - 50);
+                score += pointsAwarded;
+                StringBuilder rowText = new StringBuilder();
+                rowText.append("    " + textViewObject.getText() + "     +" + pointsAwarded + " pts");
+                if (pointsAwarded != 50) {
+                    attempts--;
+                    if (attempts == 0) {
+                        if (score > highScore) {
+                            highScore = score;
+                            saveHighScore(highScore);
+                        }
+
+                        timerRunning = false;
+
+                        btnMain.setText("Restart");
+                    }
+                } else {
+                    rowText.append("    +1 attempt");
+                }
+                TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
+                txtValue.setText(rowText);
+                scoreViewObject.setText("Score   " + Integer.toString(score));
+                attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                switch (tenth) {
+                    case 0:
+                    case 9:
+                        if (tenth == 0 && hundredth == 0)
+                            txtValue.setTextColor(Color.BLUE);
+                        else
+                            txtValue.setTextColor(Color.rgb(0, 255, 0));
+                        break;
+                    case 1:
+                    case 8:
+                        txtValue.setTextColor(Color.rgb(255, 200, 0));
+                        break;
+                    case 2:
+                    case 7:
+                        txtValue.setTextColor(Color.rgb(255, 125, 0));
+                        break;
+                    default:
+                        txtValue.setTextColor(Color.rgb(255, 0, 0));
+                        break;
+                }
+                container.addView(addView, 0);
+                if (taps > 13)
+                    container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
             }
         });
     }
