@@ -46,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
             int mins = secs / 60;
             secs %= 60;
             int milliseconds = (int) (timeInMilliseconds % 1000 / 10);
-            if (timerRunning)
+            if (timerRunning) {
+                if (milliseconds < 3 || milliseconds > 97)
+                    btnMain.setBackgroundColor(Color.CYAN);
+                else
+                    btnMain.setBackgroundColor(Color.LTGRAY);
                 textViewObject.setText("" + mins + ":" + String.format("%02d", secs) + ":"
                         + String.format("%02d", milliseconds));
+            }
+            
             customerHandler.postDelayed(this, 0);
         }
     };
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // --- RESET HIGHSCORE ---
-        //saveHighScore(0);
+        saveHighScore(0);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -72,20 +78,15 @@ public class MainActivity extends AppCompatActivity {
         container = (LinearLayout)findViewById(R.id.container);
         background = (LinearLayout)findViewById(R.id.background);
         scoreViewObject = (TextView)findViewById(R.id.scoreView);
-        //scoreViewObject.setText("Score   " + Integer.toString(score));
         attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
-        //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
         highScoreViewObject = (TextView)findViewById(R.id.highScoreView);
-        //highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
-        //startTime = SystemClock.uptimeMillis();
         customerHandler.postDelayed(updateTimerThread, 0);
         setup();
         textViewObject.setText("0:00:00");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Instructions");
-        builder.setMessage("Tap the button when the rightmost digits pass over :00\n" +
-                "The closer you get the more points you receive");
+        builder.setMessage("Tap the button to score points. Try to time your taps with the ticking of the timer. (You don't have to tap every second)");
         builder.setCancelable(true);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -111,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View addView = inflater.inflate(R.layout.row, null);
 
-                Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
-                Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
+                //Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
+                //Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
                 Integer fraction = Integer.parseInt(textViewObject.getText().toString().substring(5, 7));
                 int pointsAwarded = Math.abs(fraction - 50);
                 score += pointsAwarded;
@@ -137,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
                 txtValue.setText(rowText);
                 scoreViewObject.setText("Score   " + Integer.toString(score));
                 attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
-                switch (tenth) {
+                txtValue.setTextColor(getColor());
+                /*switch (tenth) {
                     case 0:
                     case 9:
                         if (tenth == 0 && hundredth == 0)
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         txtValue.setTextColor(Color.rgb(255, 0, 0));
                         break;
-                }
+                }*/
                 container.addView(addView, 0);
                 if (taps > 13)
                     container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
@@ -183,5 +185,26 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(INT, score);
         editor.apply();
+    }
+
+    public int getColor() {
+        Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
+        Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
+        switch (tenth) {
+            case 0:
+            case 9:
+                if (tenth == 0 && hundredth == 0)
+                    return Color.CYAN;
+                else
+                    return Color.rgb(0, 255, 0);
+            case 1:
+            case 8:
+                return Color.rgb(255, 200, 0);
+            case 2:
+            case 7:
+                return Color.rgb(255, 125, 0);
+            default:
+                return (Color.rgb(255, 0, 0));
+        }
     }
 }
