@@ -23,16 +23,11 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout container;
     LinearLayout background;
     TextView scoreViewObject;
-    TextView attemptsViewObject;
+    //TextView attemptsViewObject;
     TextView highScoreViewObject;
 
     long startTime=0L,timeInMilliseconds=0L;
-
-    int highScore;
-    int score = 0;
-    int attempts = 10;
-    int taps = 0;
-
+    int highScore, score, attempts, taps;
     boolean timerRunning = false;
 
     final String PREFS_NAME = "sharedPrefs";
@@ -47,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
             secs %= 60;
             int milliseconds = (int) (timeInMilliseconds % 1000 / 10);
             if (timerRunning) {
-                if (milliseconds < 3 || milliseconds > 97)
-                    btnMain.setBackgroundColor(Color.CYAN);
-                else
-                    btnMain.setBackgroundColor(Color.LTGRAY);
-                textViewObject.setText("" + mins + ":" + String.format("%02d", secs) + ":"
+                if (milliseconds < 3 || milliseconds > 97) {
+                    btnMain.setBackgroundColor(Color.rgb(110, 110, 150));
+                } else {
+                    btnMain.setBackgroundColor(Color.rgb(140, 140, 150));
+                }
+
+                textViewObject.setText(mins + ":" + String.format("%02d", secs) + ":"
                         + String.format("%02d", milliseconds));
+            } else {
+                btnMain.setBackgroundColor(Color.rgb(140, 140, 150));
             }
             
             customerHandler.postDelayed(this, 0);
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         container = (LinearLayout)findViewById(R.id.container);
         background = (LinearLayout)findViewById(R.id.background);
         scoreViewObject = (TextView)findViewById(R.id.scoreView);
-        attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
+        //attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
         highScoreViewObject = (TextView)findViewById(R.id.highScoreView);
         customerHandler.postDelayed(updateTimerThread, 0);
         setup();
@@ -105,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     timerRunning = true;
                     return;
                 }
-
-                btnMain.setText("");
                 ++taps;
 
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -121,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 rowText.append("    " + textViewObject.getText() + "     +" + pointsAwarded + " pts");
                 if (pointsAwarded != 50) {
                     attempts--;
+                    btnMain.setText(String.valueOf(attempts));
                     if (attempts == 0) {
                         if (score > highScore) {
                             highScore = score;
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
                 txtValue.setText(rowText);
                 scoreViewObject.setText("Score   " + Integer.toString(score));
-                attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+                //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                 txtValue.setTextColor(getColor());
                 /*switch (tenth) {
                     case 0:
@@ -160,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }*/
                 container.addView(addView, 0);
-                if (taps > 13)
-                    container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
+                //if (taps > 13)
+                //    container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
             }
         });
     }
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         btnMain.setText("Tap Here");
         scoreViewObject.setText("Score   " + Integer.toString(score));
-        attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
+        //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
         highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
         startTime = SystemClock.uptimeMillis();
         timeInMilliseconds = 0L;
@@ -194,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             case 0:
             case 9:
                 if (tenth == 0 && hundredth == 0)
-                    return Color.CYAN;
+                    return Color.BLUE;
                 else
                     return Color.rgb(0, 255, 0);
             case 1:

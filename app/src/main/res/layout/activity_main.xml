@@ -20,10 +20,11 @@
         <TextView
             android:id="@+id/scoreView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="18dp"/>
     </LinearLayout>
 
-    <LinearLayout
+    <!--LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
             android:id="@+id/attemptsView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </LinearLayout-->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -50,7 +51,8 @@
         <TextView
             android:id="@+id/highScoreView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="18dp"/>
     </LinearLayout>
 
     <TextView
@@ -58,7 +60,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textSize="40sp"
+        android:textSize="40dp"
         android:textColor="#000000"
         android:fontFamily="georgia-medium"
         android:layout_width="wrap_content"
@@ -79,7 +81,8 @@
             android:text="Tap Here"
             android:layout_weight="1"
             android:layout_width="50px"
-            android:layout_height="200px"/>
+            android:layout_height="200px"
+            android:textSize="16dp"/>
     </LinearLayout>
 
     <LinearLayout

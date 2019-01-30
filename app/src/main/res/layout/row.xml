@@ -10,5 +10,6 @@
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/txtContent"/>
+        android:id="@+id/txtContent"
+        android:textSize="20dp"/>
 </android.support.constraint.ConstraintLayout>
