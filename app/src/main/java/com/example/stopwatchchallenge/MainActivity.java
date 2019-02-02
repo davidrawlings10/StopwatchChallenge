@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout container;
     LinearLayout background;
     TextView scoreViewObject;
-    //TextView attemptsViewObject;
     TextView highScoreViewObject;
 
     long startTime=0L,timeInMilliseconds=0L;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // --- RESET HIGHSCORE ---
-        saveHighScore(0);
+        //saveHighScore(0);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         container = (LinearLayout)findViewById(R.id.container);
         background = (LinearLayout)findViewById(R.id.background);
         scoreViewObject = (TextView)findViewById(R.id.scoreView);
-        //attemptsViewObject = (TextView)findViewById(R.id.attemptsView);
         highScoreViewObject = (TextView)findViewById(R.id.highScoreView);
         customerHandler.postDelayed(updateTimerThread, 0);
         setup();
@@ -109,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View addView = inflater.inflate(R.layout.row, null);
 
-                //Integer tenth = Integer.parseInt(textViewObject.getText().toString().substring(5, 6));
-                //Integer hundredth = Integer.parseInt(textViewObject.getText().toString().substring(6, 7));
                 Integer fraction = Integer.parseInt(textViewObject.getText().toString().substring(5, 7));
                 int pointsAwarded = Math.abs(fraction - 50);
                 score += pointsAwarded;
@@ -135,31 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 TextView txtValue = (TextView)addView.findViewById(R.id.txtContent);
                 txtValue.setText(rowText);
                 scoreViewObject.setText("Score   " + Integer.toString(score));
-                //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
                 txtValue.setTextColor(getColor());
-                /*switch (tenth) {
-                    case 0:
-                    case 9:
-                        if (tenth == 0 && hundredth == 0)
-                            txtValue.setTextColor(Color.BLUE);
-                        else
-                            txtValue.setTextColor(Color.rgb(0, 255, 0));
-                        break;
-                    case 1:
-                    case 8:
-                        txtValue.setTextColor(Color.rgb(255, 200, 0));
-                        break;
-                    case 2:
-                    case 7:
-                        txtValue.setTextColor(Color.rgb(255, 125, 0));
-                        break;
-                    default:
-                        txtValue.setTextColor(Color.rgb(255, 0, 0));
-                        break;
-                }*/
                 container.addView(addView, 0);
-                //if (taps > 13)
-                //    container.setPadding(0, container.getPaddingTop() + 90, 0, 0);
             }
         });
     }
