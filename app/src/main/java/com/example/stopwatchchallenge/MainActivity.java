@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Instructions");
         builder.setMessage("Tap the button to score points. Try to time your taps with the ticking of the timer. (You don't have to tap every second)");
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         btnMain.setText("Tap Here");
         scoreViewObject.setText("Score   " + Integer.toString(score));
-        //attemptsViewObject.setText("Attempts   " + Integer.toString(attempts));
         highScoreViewObject.setText("Highscore   " + Integer.toString(highScore));
         startTime = SystemClock.uptimeMillis();
         timeInMilliseconds = 0L;
